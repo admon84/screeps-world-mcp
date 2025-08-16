@@ -6,6 +6,7 @@ import {
   UserFindOptions,
   UserOverviewOptions,
   UserMemoryOptions,
+  UserRoomsOptions,
   AuthSigninOptions,
 } from '../types/index.js';
 
@@ -59,13 +60,13 @@ export class UserToolHandlers {
     }
   }
 
-  async handleGetUserRooms(params: IntervalOptions): Promise<ToolResult> {
+  async handleGetUserRooms(params: UserRoomsOptions): Promise<ToolResult> {
     try {
       const endpoint = this.apiClient.buildEndpointWithQuery('/user/rooms', params);
       const data = await this.apiClient.makeApiCall(endpoint);
 
       const additionalGuidance = [
-        `User rooms data retrieved for ${params.interval || 'default'} interval`,
+        `User rooms data retrieved for user ID ${params.id}`,
         'Review room ownership and control levels',
         'Identify rooms that need attention or optimization',
         'Room data is complete - analyze the provided information',
@@ -74,7 +75,7 @@ export class UserToolHandlers {
       return this.apiClient.createEnhancedToolResult(
         data,
         endpoint,
-        `User Rooms${params.interval ? ` (${params.interval} interval)` : ''}`,
+        `User Rooms (${params.id})`,
         false,
         additionalGuidance,
       );
@@ -230,7 +231,7 @@ export class UserToolHandlers {
         interval: z.enum(['8', '180', '1440']).optional().describe('Interval: 8=1hr, 180=24hr, 1440=7days'),
       },
       getUserRooms: {
-        interval: z.enum(['8', '180', '1440']).optional().describe('Interval: 8=1hr, 180=24hr, 1440=7days'),
+        id: z.string().describe('User ID (can be found using find_user tool)'),
       },
       findUser: {
         id: z.string().optional().describe('User ID'),

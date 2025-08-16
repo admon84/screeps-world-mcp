@@ -95,6 +95,10 @@ export interface UserOverviewOptions extends IntervalOptions {
   statName?: StatName;
 }
 
+export interface UserRoomsOptions {
+  id: string;
+}
+
 export interface RoomTerrainOptions extends RoomOptions {
   encoded?: boolean;
 }

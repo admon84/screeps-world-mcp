@@ -72,7 +72,7 @@ After completing the [setup](#setup), add to your `mcp.json`:
       "command": "node",
       "args": ["/path/to/screeps-world-mcp/dist/index.js"],
       "env": {
-        "SCREEPS_TOKEN": "your_token_here"
+        "SCREEPS_TOKEN": "${env:SCREEPS_TOKEN}"
       }
     }
   }
@@ -117,7 +117,7 @@ Tools allow interactive queries with parameters:
 ### User Data
 - **get_user_name**: Get user name
 - **get_user_stats**: Get user statistics with optional interval
-- **get_user_rooms**: Get user rooms with optional interval
+- **get_user_rooms**: Get user rooms by user ID
 - **find_user**: Find user by ID or username
 - **get_user_overview**: Get user overview statistics with interval and stat filtering
 - **get_user_memory**: Get user memory data

@@ -110,7 +110,7 @@ export class ToolRegistry {
       'get_user_rooms',
       {
         title: 'Get User Rooms',
-        description: 'Get user rooms',
+        description: 'Get user rooms by user ID. Use find_user tool first to get the user ID from username.',
         inputSchema: userSchemas.getUserRooms,
       },
       (params) => this.userHandlers.handleGetUserRooms(params),

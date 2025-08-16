@@ -4,6 +4,9 @@
   "description": "Experimental MCP (Model Context Protocol) service for Screeps World",
   "main": "dist/index.js",
   "type": "module",
+  "bin": {
+    "screeps-world-mcp": "dist/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",

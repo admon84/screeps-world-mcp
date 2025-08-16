@@ -1,7 +1,7 @@
 import { ScreepsConfig } from '../types/index.js';
 
 export const DEFAULT_CONFIG: ScreepsConfig = {
-  baseUrl: 'https://screeps.com/api',
+  baseUrl: process.env.SCREEPS_BASE_URL || 'https://screeps.com/api',
   token: process.env.SCREEPS_TOKEN,
   username: process.env.SCREEPS_USERNAME,
 };

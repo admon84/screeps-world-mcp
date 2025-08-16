@@ -36,15 +36,16 @@ export class ScreepsWorldMcp {
   }
 
   public async start(): Promise<void> {
+    if (!this.configManager.getToken()) {
+      console.log('No token found, set the SCREEPS_TOKEN environment variable and try again');
+      return;
+    }
+
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
 
     console.log('Screeps World MCP Service is running...');
-    console.log('Configuration:', {
-      baseUrl: this.configManager.getBaseUrl(),
-      hasToken: !!this.configManager.getToken(),
-      hasUsername: !!this.configManager.getUsername(),
-    });
+    console.log('Screeps Server:', this.configManager.getBaseUrl());
   }
 
   public getConfig(): ScreepsConfig {
