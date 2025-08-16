@@ -27,8 +27,18 @@ export class ApiClient {
     const cacheKey = this.generateCacheKey(endpoint, options);
     const cachedResult = this.getCachedResult(cacheKey);
 
-    // Track this call for loop detection
+    // Track this call for loop detection BEFORE checking cache
     this.trackCall(endpoint, cacheKey);
+
+    // Detect loops early and block the call
+    const loopDetection = this.detectLoops();
+    if (loopDetection.isLoop) {
+      throw new Error(
+        `🚨 LOOP DETECTED: This identical API call has been made multiple times recently. ` +
+          `Please analyze the existing data instead of making repeated calls. ` +
+          `Endpoint: ${endpoint}`,
+      );
+    }
 
     if (cachedResult) {
       // Add cache hit indicator
@@ -105,13 +115,14 @@ export class ApiClient {
         recentIdenticalCalls.set(call.cacheKey, count + 1);
       });
 
-    // Check for repetitive patterns
+    // Check for repetitive patterns - be more aggressive
     for (const [cacheKey, count] of recentIdenticalCalls.entries()) {
-      if (count >= 3) {
+      if (count >= 2) {
         isLoop = true;
-        warnings.push(`🚨 LOOP DETECTED: Identical call made ${count} times in the last 5 minutes`);
-        warnings.push(`🛑 STOP: You have all the data you need from this endpoint`);
-        warnings.push(`💡 GUIDANCE: Analyze the existing data instead of making more calls`);
+        warnings.push(`🚨 CRITICAL LOOP DETECTED: Identical call made ${count} times in the last 5 minutes`);
+        warnings.push(`🛑 STOP IMMEDIATELY: You already have all the data from this endpoint`);
+        warnings.push(`💡 MANDATORY: Analyze the existing data - DO NOT make more calls`);
+        warnings.push(`⚠️ SYSTEM: Further identical calls will be blocked`);
       }
     }
 

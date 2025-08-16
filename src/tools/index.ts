@@ -39,7 +39,8 @@ export class ToolRegistry {
       'get_room_terrain',
       {
         title: 'Get Room Terrain',
-        description: 'Get terrain information for a specific room',
+        description:
+          'Get terrain information for a specific room. Call this tool ONCE per room - terrain data is static and complete in a single response.',
         inputSchema: roomSchemas.roomTerrain,
       },
       (params) => this.roomHandlers.handleGetRoomTerrain(params),
@@ -49,7 +50,8 @@ export class ToolRegistry {
       'get_room_objects',
       {
         title: 'Get Room Objects',
-        description: 'Get objects and users in a specific room',
+        description:
+          'Get objects and users in a specific room. Call this tool ONCE per room - the response contains complete room data. Do NOT call repeatedly for the same room.',
         inputSchema: roomSchemas.roomObjects,
       },
       (params) => this.roomHandlers.handleGetRoomObjects(params),
@@ -59,7 +61,8 @@ export class ToolRegistry {
       'get_room_overview',
       {
         title: 'Get Room Overview',
-        description: 'Get room overview and statistics',
+        description:
+          'Get room overview and statistics. Call this tool ONCE per room/interval combination - provides complete statistical data in a single response.',
         inputSchema: roomSchemas.roomOverview,
       },
       (params) => this.roomHandlers.handleGetRoomOverview(params),
@@ -69,7 +72,8 @@ export class ToolRegistry {
       'get_room_status',
       {
         title: 'Get Room Status',
-        description: 'Get room status information',
+        description:
+          'Get room status information. Call this tool ONCE per room - status data is complete and rarely changes.',
         inputSchema: roomSchemas.roomStatus,
       },
       (params) => this.roomHandlers.handleGetRoomStatus(params),

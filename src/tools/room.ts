@@ -44,6 +44,10 @@ export class RoomToolHandlers {
       const data = await this.apiClient.makeApiCall(endpoint);
 
       const additionalGuidance = [
+        '✅ COMPLETE: All room objects retrieved successfully - NO MORE CALLS NEEDED',
+        '🛑 STOP: This data is complete - do NOT call get_room_objects again for this room',
+        '📊 ANALYZE: Process the structures, creeps, and resources from this response',
+        '🎯 NEXT: Use this data to understand room composition and development level',
         'Analyze structures to understand room development level',
         'Check for enemy creeps or defensive structures',
         'Look for resource deposits and energy sources',
@@ -57,10 +61,21 @@ export class RoomToolHandlers {
         additionalGuidance,
       );
     } catch (error) {
-      return this.apiClient.createToolResult(
-        `Error getting room objects: ${error instanceof Error ? error.message : String(error)}`,
-        true,
-      );
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
+      // Check if this is a loop detection error and make it more prominent
+      if (errorMessage.includes('LOOP DETECTED')) {
+        return this.apiClient.createToolResult(
+          `🚨 CRITICAL ERROR - LOOP DETECTED 🚨\n\n` +
+            `${errorMessage}\n\n` +
+            `⚠️ SYSTEM MESSAGE: This tool has been called multiple times for the same room.\n` +
+            `📊 SOLUTION: Analyze the data from previous calls instead of making new ones.\n` +
+            `🛑 ACTION REQUIRED: Stop calling get_room_objects and use existing data.`,
+          true,
+        );
+      }
+
+      return this.apiClient.createToolResult(`Error getting room objects: ${errorMessage}`, true);
     }
   }
 
